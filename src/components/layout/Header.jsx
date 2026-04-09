@@ -36,6 +36,23 @@ export function Header() {
             <Link
               key={item.label}
               to={item.to}
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  if (item.to.startsWith('/#')) {
+                    e.preventDefault();
+                    const targetId = item.to.replace('/#', '');
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth' });
+                      window.history.pushState(null, '', item.to);
+                    }
+                  } else if (item.to === '/') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.history.pushState(null, '', '/');
+                  }
+                }
+              }}
               className="rounded-full px-3.5 py-2 text-sm font-medium text-zinc-600 transition hover:bg-white hover:text-zinc-900 hover:shadow-sm dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
             >
               {item.label}
@@ -94,6 +111,25 @@ function MobileNav() {
           <Link
             key={item.label}
             to={item.to}
+            onClick={(e) => {
+              if (window.location.pathname === '/') {
+                if (item.to.startsWith('/#')) {
+                  e.preventDefault();
+                  const targetId = item.to.replace('/#', '');
+                  const targetElement = document.getElementById(targetId);
+                  if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    window.history.pushState(null, '', item.to);
+                  }
+                } else if (item.to === '/') {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.history.pushState(null, '', '/');
+                }
+              }
+              // Close the details menu
+              e.currentTarget.closest('details')?.removeAttribute('open');
+            }}
             className="block px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:text-zinc-200 dark:hover:bg-zinc-900"
           >
             {item.label}
