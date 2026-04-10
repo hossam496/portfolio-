@@ -34,6 +34,7 @@ export function AdminMessages() {
   });
   const [deletingId, setDeletingId] = useState(null);
   const [updatingId, setUpdatingId] = useState(null);
+  const [viewMessage, setViewMessage] = useState(null);
 
   const load = useCallback(async () => {
     setState((s) => ({ ...s, loading: true, error: null }));
@@ -224,9 +225,22 @@ export function AdminMessages() {
                       </a>
                     </td>
                     <td className="max-w-md px-4 py-3 align-top">
-                      <p className="line-clamp-3 whitespace-pre-wrap text-zinc-600 dark:text-zinc-400">
-                        {m.message}
-                      </p>
+                      <div className="whitespace-pre-wrap text-zinc-600 dark:text-zinc-400">
+                        {m.message?.length > 100 ? (
+                          <>
+                            {m.message.substring(0, 100)}...{' '}
+                            <button
+                              type="button"
+                              onClick={() => setViewMessage(m)}
+                              className="text-xs font-semibold text-accent hover:underline"
+                            >
+                              more
+                            </button>
+                          </>
+                        ) : (
+                          m.message
+                        )}
+                      </div>
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 align-top text-xs text-zinc-500">
                       {formatDate(m.createdAt)}
@@ -283,9 +297,22 @@ export function AdminMessages() {
                   {formatDate(m.createdAt)}
                 </span>
               </div>
-              <p className="mt-3 whitespace-pre-wrap text-sm text-zinc-600 dark:text-zinc-400">
-                {m.message}
-              </p>
+              <div className="mt-3 whitespace-pre-wrap text-sm text-zinc-600 dark:text-zinc-400">
+                {m.message?.length > 100 ? (
+                  <>
+                    {m.message.substring(0, 100)}...{' '}
+                    <button
+                      type="button"
+                      onClick={() => setViewMessage(m)}
+                      className="text-xs font-semibold text-accent hover:underline"
+                    >
+                      more
+                    </button>
+                  </>
+                ) : (
+                  m.message
+                )}
+              </div>
               <div className="mt-4 flex gap-2">
                 <button
                   type="button"
@@ -306,6 +333,37 @@ export function AdminMessages() {
               </div>
             </motion.div>
           ))}
+        </div>
+      )}
+
+      {viewMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-900/40 p-4 backdrop-blur-sm dark:bg-black/60">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative w-full max-w-lg rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900"
+          >
+            <h3 className="font-display text-xl font-semibold text-zinc-900 dark:text-white">
+              Message from {viewMessage.name}
+            </h3>
+            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+              {formatDate(viewMessage.createdAt)}
+            </p>
+            <div className="mt-5 max-h-[60vh] overflow-y-auto rounded-xl border border-zinc-100 bg-zinc-50 p-4 dark:border-zinc-800/60 dark:bg-zinc-950/50">
+              <p className="whitespace-pre-wrap text-sm text-zinc-700 dark:text-zinc-300">
+                {viewMessage.message}
+              </p>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setViewMessage(null)}
+                className="btn-secondary"
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
         </div>
       )}
 
