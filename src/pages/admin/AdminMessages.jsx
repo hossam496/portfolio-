@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
 import {
   fetchMessages,
@@ -65,7 +66,24 @@ export function AdminMessages() {
   }, [unreadOnly]);
 
   async function onDelete(id) {
-    if (!window.confirm('Delete this message?')) return;
+    const result = await Swal.fire({
+      title: 'Delete message?',
+      text: 'This message will be permanently removed.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Delete',
+      customClass: {
+        popup: 'pf-swal-popup',
+        title: 'pf-swal-title',
+        htmlContainer: 'pf-swal-text',
+        confirmButton: 'pf-swal-confirm',
+      },
+    });
+
+    if (!result.isConfirmed) return;
+
     setDeletingId(id);
     try {
       await deleteContactMessage(id);
