@@ -23,6 +23,7 @@
   }
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
   body {
     @apply bg-surface font-sans text-zinc-800 antialiased transition-colors duration-300 dark:text-zinc-100;

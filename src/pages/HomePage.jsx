@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Hero } from '../components/sections/Hero.jsx';
 import { About } from '../components/sections/About.jsx';
@@ -7,6 +9,19 @@ import { Contact } from '../components/sections/Contact.jsx';
 import { Footer } from '../components/layout/Footer.jsx';
 
 export function HomePage() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash.replace('#', ''));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [hash]);
+
   return (
     <div className="pf-page">
       <Helmet>
