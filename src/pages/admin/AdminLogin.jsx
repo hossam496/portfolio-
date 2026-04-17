@@ -101,13 +101,6 @@ export function AdminLogin() {
               <h2 className="mt-6 font-display text-2xl font-semibold text-zinc-900 dark:text-white lg:mt-0">
                 Sign in
               </h2>
-              <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                Use the admin email and password from your server{' '}
-                <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-[11px] dark:bg-zinc-800">
-                  .env
-                </code>
-                .
-              </p>
 
               {formError ? (
                 <p
